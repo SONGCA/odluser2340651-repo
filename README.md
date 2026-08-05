@@ -21,7 +21,7 @@ Then open <http://localhost:3000>.
 gulp
 node dist/app.js
 ```
-
+?
 The build bundles and minifies the CSS and JavaScript, rewrites the templates to point at
 those bundles, and copies the server, its data, the manifests, and the `Dockerfile` into
 `dist/`.
