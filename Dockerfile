@@ -1,20 +1,18 @@
-# Use the official Alpine image as a base
-FROM node:20-alpine
+FROM node:22-alpine
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# OS 최신 보안 패치 적용
+RUN apk update && apk upgrade --no-cache
 
-# Install dependencies
+COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application code
-COPY . .
+# 애플리케이션 파일 복사 시 node 사용자에게 소유권 부여
+COPY --chown=node:node . .
 
-# Expose the port the app runs on
+# 💡 [핵심] root 대신 non-root 계정(node)으로 실행하도록 설정!
+USER node
+
 EXPOSE 3000
-
-# Define the command to run the app
 CMD ["node", "app.js"]
