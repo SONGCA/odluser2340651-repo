@@ -1,20 +1,15 @@
-# Use the official Alpine image as a base
-FROM node:20-alpine
+# 기존 node:20-alpine 대신 최신 알파인 이미지 사용 및 패키지 업데이트
+FROM node:22-alpine
 
-# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# OS 최신 보안 패치 적용 (libcrypto3 등 CRITICAL 제거)
+RUN apk update && apk upgrade --no-cache
 
-# Install dependencies
+COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application code
 COPY . .
 
-# Expose the port the app runs on
 EXPOSE 3000
-
-# Define the command to run the app
 CMD ["node", "app.js"]
